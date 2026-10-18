@@ -206,7 +206,7 @@ existing installation, select it in the provider menu.
 The MCP provider batches related queries into one search and returns citable URLs and excerpts, without
 images. News and start dates are relevance guidance, not strict filters; the quality setting always uses
 Fast mode. Choose an existing API provider for its advanced filtering or image support. Errors are
-reported without automatically switching providers. Requests stop when the chat is cancelled and have
+reported without automatically switching providers. MCP requests honor the application's abort signal and have
 a 30-second deadline. Anonymous usage is subject to service limits. Other tools, model providers,
 authentication and storage still require their own configuration.
 
