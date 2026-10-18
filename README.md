@@ -193,6 +193,27 @@ Research at the speed of thought. The agentic research platform that plans, retr
 
 After completing these steps, you should be able to use Scira as your default search engine in Chrome.
 
+### Web search without search API keys
+
+New installations use **Automatic** in the web search provider selector. Automatic uses configured
+`FIRECRAWL_API_KEY`, then `EXA_API_KEY`, then `PARALLEL_API_KEY`; with none configured, it uses
+[Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp) at
+`https://search.parallel.ai/mcp`. This provides free Fast web search without a Parallel account or API key.
+You can also select **Parallel Search MCP** explicitly in the search menu or Settings. Existing saved
+provider selections and explicit API requests keep their chosen provider. To use Automatic on an
+existing installation, select it in the provider menu.
+
+The MCP provider batches related queries into one search and returns citable URLs and excerpts, without
+images. News and start dates are relevance guidance, not strict filters; the quality setting always uses
+Fast mode. Choose an existing API provider for its advanced filtering or image support. Errors are
+reported without automatically switching providers. MCP requests honor the application's abort signal and have
+a 30-second deadline. Anonymous usage is subject to service limits. Other tools, model providers,
+authentication and storage still require their own configuration.
+
+Run the focused search tests with `pnpm test:search`. They use a local protocol fixture and a scripted
+model, without live model inference. To additionally exercise the live anonymous provider through the
+application tool loader, run `SCIRA_LIVE_SEARCH=1 pnpm test:search`.
+
 ### Local development
 
 #### Run via Docker
@@ -230,7 +251,7 @@ To run the application locally without Docker:
 1. Sign up for accounts with the required AI providers:
    - OpenAI (required)
    - Anthropic (required)
-   - Exa (required for web search feature)
+   - Exa (optional for web search; Automatic can use keyless Parallel Search MCP)
 2. Copy `.env.example` to `.env.local` and fill in your API keys
 3. Install dependencies:
    ```bash

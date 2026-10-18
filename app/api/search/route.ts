@@ -846,10 +846,14 @@ export async function POST(req: Request) {
         model === 'scira-qwen-coder-plus' || model === 'scira-qwen-3-vl' || model === 'scira-qwen-3-vl-thinking'
           ? [...configuredActiveTools].filter((tool) => tool !== 'code_interpreter')
           : [...configuredActiveTools];
+      const streamLanguageModel = shouldUseXaiMultiAgent
+        ? xai.responses('grok-4.20-multi-agent')
+        : scira.languageModel(model);
       const loadedTools = await loadConfiguredTools({
         activeToolNames: streamActiveTools,
         dataStream,
         searchProvider,
+        searchContext: { sessionId: id, modelName: streamLanguageModel.modelId, abortSignal: abortController.signal },
         timezone,
         contextFiles,
         extremeSearchModel,
@@ -958,7 +962,7 @@ export async function POST(req: Request) {
       }
 
       const result = streamText({
-        model: shouldUseXaiMultiAgent ? xai.responses('grok-4.20-multi-agent') : scira.languageModel(model),
+        model: streamLanguageModel,
         messages: processedMessages,
         ...getModelParameters(shouldUseXaiMultiAgent ? 'grok-4.20-multi-agent' : model),
         stopWhen: stepCountIs(shouldUseXaiMultiAgent ? 5 : group === 'mcp' ? 50 : 5),
