@@ -850,6 +850,7 @@ export async function POST(req: Request) {
         activeToolNames: streamActiveTools,
         dataStream,
         searchProvider,
+        searchContext: { sessionId: id, modelName: model, abortSignal: abortController.signal },
         timezone,
         contextFiles,
         extremeSearchModel,

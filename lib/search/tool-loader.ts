@@ -15,6 +15,7 @@ interface LoadConfiguredToolsParams {
   activeToolNames: string[];
   dataStream: any;
   searchProvider: SearchProvider | undefined;
+  searchContext?: import('@/lib/tools/parallel-search-mcp').SearchContext;
   timezone: string | undefined;
   contextFiles: Array<{ url: string; contentType: string; name?: string }>;
   extremeSearchModel: ExtremeSearchModelId | undefined;
@@ -28,6 +29,7 @@ export async function loadConfiguredTools({
   activeToolNames,
   dataStream,
   searchProvider,
+  searchContext,
   timezone,
   contextFiles,
   extremeSearchModel,
@@ -70,7 +72,7 @@ export async function loadConfiguredTools({
         }
         case 'web_search': {
           const { webSearchTool } = await import('@/lib/tools/web-search');
-          tools.web_search = webSearchTool(dataStream, searchProvider);
+          tools.web_search = webSearchTool(dataStream, searchProvider, searchContext);
           return;
         }
         case 'academic_search': {

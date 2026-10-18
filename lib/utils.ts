@@ -1,3 +1,4 @@
+import type { SearchProvider } from '@/lib/search/search-provider';
 // /lib/utils.ts
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -60,21 +61,23 @@ export type SearchGroupId =
 
 // Search provider information for dynamic descriptions
 export const searchProviderInfo = {
+  auto: 'the configured search provider',
+  'parallel-mcp': 'Parallel Search MCP',
   parallel: 'Parallel AI',
   exa: 'Exa, one of the best web search APIs for AI',
   firecrawl: 'Firecrawl',
 } as const;
 
-export type SearchProvider = keyof typeof searchProviderInfo;
+export type { SearchProvider } from '@/lib/search/search-provider';
 
 // Function to get dynamic web search description based on selected provider
-export function getWebSearchDescription(provider: SearchProvider = 'exa'): string {
+export function getWebSearchDescription(provider: SearchProvider = 'auto'): string {
   const providerName = searchProviderInfo[provider];
   return `Search across the entire internet powered by ${providerName}`;
 }
 
 // Function to get search groups with dynamic descriptions
-export function getSearchGroups(searchProvider: SearchProvider = 'exa') {
+export function getSearchGroups(searchProvider: SearchProvider = 'auto') {
   return [
     {
       id: 'web' as const,
