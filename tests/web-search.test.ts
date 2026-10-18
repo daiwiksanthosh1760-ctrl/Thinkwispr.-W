@@ -327,7 +327,7 @@ test(
       requests.push({ url: String(url), init, rpc: init.body ? JSON.parse(String(init.body)) : undefined });
       return nativeFetch(url, init);
     };
-    const result = await execute();
+    const result = await execute(undefined, { searchContext: { sessionId: 'scira-test-conversation' } });
     assert.ok(result.searches[0].results.length > 0);
     assert.match(result.searches[0].results[0].url, /^https?:\/\//);
     assert.ok(result.searches[0].results[0].content.length > 0);
